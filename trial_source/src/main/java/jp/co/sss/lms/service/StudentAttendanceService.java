@@ -1,6 +1,7 @@
 package jp.co.sss.lms.service;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -71,6 +72,23 @@ public class StudentAttendanceService {
 		}
 
 		return attendanceManagementDtoList;
+	}
+	
+	/**
+	 * 勤怠情報の未入力件数取得
+	 * 
+	 * @param lmsUserId
+	 * @return 勤怠情報の未入力件数
+	 */
+	public Integer notEnterCountMethod(Integer lmsUserId) throws ParseException {
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		Date trainingDate = df.parse(df.format(new Date()));
+		
+		try {
+			return tStudentAttendanceMapper.notEnterCount(lmsUserId, Constants.DB_FLG_FALSE, trainingDate);
+		}catch (Exception e) {
+			return 0;
+		}
 	}
 
 	/**
