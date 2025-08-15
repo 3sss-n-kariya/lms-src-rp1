@@ -49,6 +49,7 @@ public class AttendanceController {
 		
 		// 過去の勤怠情報で未入力が無いかチェック
 		int notEnteredCount = studentAttendanceService.notEnterCountMethod(loginUserDto.getLmsUserId());
+		// 未入力分があればhasNotEnterCount変数にtrueが入る
 		boolean hasNotEnterCount = notEnteredCount > 0;
 		model.addAttribute("hasNotEnterCount", hasNotEnterCount);
 

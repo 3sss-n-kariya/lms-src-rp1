@@ -47,33 +47,35 @@
 
 	<div class="row">
 		<div class="bs-component col-sm-12">
-			<table class="table table-hover dataTable no-footer">
-				<thead class="db">
-					<tr>
-						<th class="w160">日付</th>
-						<th class="w260">コース内容</th>
-						<th class="w80">出勤</th>
-						<th class="w80">退勤</th>
-						<th class="w120">中抜け時間</th>
-						<th class="w120">ステータス</th>
-						<th class="w200">備考</th>
-					</tr>
-				</thead>
-
-				<tbody class="db">
-					<th:block th:each="attendanceManagementDto : ${attendanceManagementDtoList}" th:object="${attendanceManagementDto}">
+			<div class="table-scroll">
+				<table class="table table-hover dataTable no-footer">
+					<thead class="db">
 						<tr>
-							<td class="w160">[[*{#dates.format(trainingDate, 'yyyy年M月d日(E)')}]]</td>
-							<td class="w260">[[*{sectionName}]]</td>
-							<td class="w80">[[*{trainingStartTime}]]</td>
-							<td class="w80">[[*{trainingEndTime}]]</td>
-							<td class="w120">[[*{blankTimeValue}]]</td>
-							<td class="w120">[[*{statusDispName}]]</td>
-							<td class="w200">[[*{note}]]</td>
+							<th class="w160">日付</th>
+							<th class="w260">コース内容</th>
+							<th class="w80">出勤</th>
+							<th class="w80">退勤</th>
+							<th class="w120">中抜け時間</th>
+							<th class="w120">ステータス</th>
+							<th class="w200">備考</th>
 						</tr>
-					</th:block>
-				</tbody>
-			</table>
+					</thead>
+	
+					<tbody class="db">
+						<th:block th:each="attendanceManagementDto : ${attendanceManagementDtoList}" th:object="${attendanceManagementDto}">
+							<tr>
+								<td class="w160">[[*{#dates.format(trainingDate, 'yyyy年M月d日(E)')}]]</td>
+								<td class="w260">[[*{sectionName}]]</td>
+								<td class="w80">[[*{trainingStartTime}]]</td>
+								<td class="w80">[[*{trainingEndTime}]]</td>
+								<td class="w120">[[*{blankTimeValue}]]</td>
+								<td class="w120">[[*{statusDispName}]]</td>
+								<td class="w200">[[*{note}]]</td>
+							</tr>
+						</th:block>
+					</tbody>
+				</table>
+			</div>
 		</div>
 	</div>
 
