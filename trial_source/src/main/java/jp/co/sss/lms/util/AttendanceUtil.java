@@ -131,6 +131,51 @@ public class AttendanceUtil {
 		}
 		return map;
 	}
+	
+	/**
+	 * 出退勤時間取得
+	 * 
+	 * @return 出退勤時間
+	 */
+	public LinkedHashMap<Integer, String> setHourOptions() {
+		LinkedHashMap<Integer, String> map = new LinkedHashMap<>();
+		for (int i = 0; i < 24; i++) {
+			map.put(i, String.format("%02d", i));
+		}
+		return map;
+	}
+	
+	/**
+	 * 出退勤分取得
+	 * 
+	 * @return 出退勤分
+	 */
+	public LinkedHashMap<Integer, String> setMinuteOptions() {
+		LinkedHashMap<Integer, String> map = new LinkedHashMap<>();
+		for (int i = 0; i < 60; i++) {
+			map.put(i, String.format("%02d", i));
+		}
+		return map;
+	}
+
+	/**
+	 * 時間と分を分割した新しいリスト取得
+	 * 
+	 * @return 時間と分を分割した新しいリスト
+	 */
+	public int[] splitHhmm(String hhmm) {
+	    if (hhmm == null || hhmm.isBlank()) return null;
+	    // ：で文字列を分割
+	    String[] p = hhmm.split(":");
+	    if (p.length != 2) return null;
+	    try {
+	    	// 数字に変換
+	        int h = Integer.parseInt(p[0]), m = Integer.parseInt(p[1]);
+	        // 範囲が妥当なら新しいリストを返却
+	        if (0 <= h && h <= 23 && 0 <= m && m <= 59) return new int[]{h, m};
+	    } catch (NumberFormatException ignore) {}
+	    return null;
+	}
 
 	/**
 	 * 研修日の判定
