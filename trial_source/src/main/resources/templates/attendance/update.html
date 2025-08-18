@@ -27,6 +27,7 @@
 						<tr>
 							<th class="w140">日付</th>
 							<th class="w300">コース内容</th>
+							<th class="w70">定時</th>
 							<th class="w70">出勤</th>
 							<th class="w70">退勤</th>
 							<th class="w80">中抜け時間</th>
@@ -47,6 +48,9 @@
 								</th:block>
 								<td class="w140">[[${dailyAttendanceForm.dispTrainingDate}]]</td>
 								<td class="w300">[[${dailyAttendanceForm.sectionName}]]</td>
+								<td class="w70" >
+									<button type="button" class="btn btn-info-regular-time js-regular">定時</button>
+								</td>
 								<td class="w240">
 								  <div class="form-inline">
 								    <!-- 出勤: 時 -->
@@ -113,6 +117,24 @@
 			</form>
 		</div>
 	</div>
+	
+<!--	定時ボタンのjs-->
+	<script>
+	  document.addEventListener('click', function (e) {
+	    const btn = e.target.closest('.js-regular');
+	    if (!btn) return;
+	    const tr = btn.closest('tr');
+	    if (!tr) return;
+	    const startHour   = tr.querySelector('select[name*=".startHour"]');
+	    const startMinute = tr.querySelector('select[name*=".startMinute"]');
+	    const endHour     = tr.querySelector('select[name*=".endHour"]');
+	    const endMinute   = tr.querySelector('select[name*=".endMinute"]');
+	    if (startHour)   startHour.value   = '9';
+	    if (startMinute) startMinute.value = '0';
+	    if (endHour)     endHour.value     = '18';
+	    if (endMinute)   endMinute.value   = '0';
+	  });
+	</script>
 
 </body>
 </html>
