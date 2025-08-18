@@ -3510,7 +3510,7 @@ textarea.form-group-lg .form-control, select[multiple].form-group-lg .form-contr
 }
 
 .btn-info-regular-time:hover, .btn-info-regular-time:focus, .btn-info-regular-time.focus, .btn-info-regular-time:active,
-	.btn-info.active, .open>.dropdown-toggle.btn-info {
+	.btn-info-regular-time.active, .open>.dropdown-toggle.btn-info-regular-time {
 	color: #ffffff;
 	background-color: #699934;
 	border-color: #59822c
