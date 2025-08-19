@@ -3502,40 +3502,6 @@ textarea.form-group-lg .form-control, select[multiple].form-group-lg .form-contr
 	background-color: #ffffff
 }
 
-/*定時ボタン*/
-.btn-info-regular-time {
-	color: #ffffff;
-	background-color: #73a839;
-	border-color: #73a839
-}
-
-.btn-info-regular-time:hover, .btn-info-regular-time:focus, .btn-info-regular-time.focus, .btn-info-regular-time:active,
-	.btn-info-regular-time.active, .open>.dropdown-toggle.btn-info-regular-time {
-	color: #ffffff;
-	background-color: #699934;
-	border-color: #59822c
-}
-
-.btn-info-regular-time:active, .btn-info-regular-time.active, .open>.dropdown-toggle.btn-info-regular-time {
-	background-image: none
-}
-
-.btn-info-regular-time.disabled, .btn-info-regular-time[disabled], fieldset[disabled] .btn-info-regular-time,
-	.btn-info-regular-time.disabled:hover, .btn-info-regular-time[disabled]:hover, fieldset[disabled] .btn-info-regular-time:hover,
-	.btn-info-regular-time.disabled:focus, .btn-info-regular-time[disabled]:focus, fieldset[disabled] .btn-info-regular-time:focus,
-	.btn-info-regular-time.disabled.focus, .btn-info-regular-time[disabled].focus, fieldset[disabled] .btn-info-regular-time.focus,
-	.btn-info-regular-time.disabled:active, .btn-info-regular-time[disabled]:active, fieldset[disabled] .btn-info-regular-time:active,
-	.btn-info-regular-time.disabled.active, .btn-info-regular-time[disabled].active, fieldset[disabled] .btn-info-regular-time.active
-	{
-	background-color: #73a839;
-	border-color: #73a839
-}
-
-.btn-info-regular-time .badge {
-	color: #73a839;
-	background-color: #ffffff
-}
-
 .btn-warning {
 	color: #ffffff;
 	background-color: #dd5600;
