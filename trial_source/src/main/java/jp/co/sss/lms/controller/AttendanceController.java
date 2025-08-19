@@ -136,12 +136,34 @@ public class AttendanceController {
 	 * @throws ParseException
 	 */
 	@RequestMapping(path = "/update", params = "complete", method = RequestMethod.POST)
-	public String complete(AttendanceForm attendanceForm, Model model, BindingResult result)
+	public String complete(AttendanceForm attendanceForm, BindingResult result, Model model)
 			throws ParseException {
+		
+		//更新前のチェック
+		result = studentAttendanceService.updateCheck(attendanceForm,result);
+		if(attendanceForm.getErrorList() != null) {
+			model.addAttribute("errorList",attendanceForm.getErrorList());
+		}
+		model.addAttribute("errorCount",result.getErrorCount());
 
 		// 更新
-		String message = studentAttendanceService.update(attendanceForm);
-		model.addAttribute("message", message);
+		if (result.hasErrors()) {
+			
+			// 一覧の再取得
+			List<AttendanceManagementDto> attendanceManagementDtoList = studentAttendanceService
+					.getAttendanceManagement(loginUserDto.getCourseId(), loginUserDto.getLmsUserId());
+			model.addAttribute("attendanceManagementDtoList", attendanceManagementDtoList);
+			
+			//勤怠フォームの生成
+			attendanceForm = studentAttendanceService
+					.setAttendanceForm(attendanceManagementDtoList);
+			model.addAttribute("attendanceForm", attendanceForm);
+			return "attendance/update";
+		} else {
+			//もともとのソースコード部分
+			String message = studentAttendanceService.update(attendanceForm);
+			model.addAttribute("message", message);
+		}
 		// 一覧の再取得
 		List<AttendanceManagementDto> attendanceManagementDtoList = studentAttendanceService
 				.getAttendanceManagement(loginUserDto.getCourseId(), loginUserDto.getLmsUserId());

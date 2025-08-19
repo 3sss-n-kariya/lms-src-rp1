@@ -10,6 +10,14 @@
 	<th:block th:if="${session.loginUserDto.role == '0001'}">
 		<h2>勤怠管理</h2>
 	</th:block>
+	
+<!--	 エラーメッセージ -->
+	<th:block th:if="${errorCount != 0}" id="error">
+		<ul style="padding-left: 0; list-style: none;" th:each="errors :${errorList}">
+			<li th:if="${errors != null}"><span th:text="'*' + '&nbsp' + ${errors}" class="help-inline error"></span>
+			</li>
+		</ul>
+	</th:block>
 
 	<th:block th:if="${session.loginUserDto.role != '0001'}">
 		<h2>勤怠管理 <small>( [[${attendanceForm.userName}]] )</small></h2>
@@ -21,7 +29,7 @@
 	<div class="row">
 		<div class="bs-component col-sm-12">
 
-			<form th:action="@{/attendance/update}" method="post">
+			<form th:action="@{/attendance/update}" method="post" th:object="${attendanceForm}">
 				<table class="table table-hover dataTable no-footer">
 					<thead>
 						<tr>
@@ -36,7 +44,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<th:block th:each="dailyAttendanceForm, stat : *{attendanceForm.attendanceList}">
+						<th:block th:each="dailyAttendanceForm, stat : *{attendanceList}">
 							<tr>
 								<th:block>
 									<input type="hidden" th:name="|attendanceList[${stat.index}].isToday|" th:value="${dailyAttendanceForm.isToday}" />
@@ -54,7 +62,7 @@
 								<td class="w240">
 								  <div class="form-inline">
 								    <!-- 出勤: 時 -->
-								    <select class="form-control" th:name="|attendanceList[${stat.index}].startHour|">
+								    <select class="form-control" th:name="|attendanceList[${stat.index}].startHour|" th:errorclass="errorInput">
 								      <option value=""></option>
 								      <option th:each="opt : ${attendanceForm.hourOptions}" th:value="${opt.key}" th:text="${opt.value}"
 								              th:selected="${opt.key == dailyAttendanceForm.startHour}">
@@ -62,7 +70,7 @@
 								    </select>
 								    ：
 								    <!-- 出勤: 分 -->
-								    <select class="form-control" th:name="|attendanceList[${stat.index}].startMinute|">
+								    <select class="form-control" th:name="|attendanceList[${stat.index}].startMinute|" th:errorclass="errorInput">
 								      <option value=""></option>
 								      <option th:each="opt : ${attendanceForm.minuteOptions}" th:value="${opt.key}" th:text="${opt.value}"
 								              th:selected="${opt.key == dailyAttendanceForm.startMinute}">
@@ -73,7 +81,7 @@
 								<td class="w240">
 								  <div class="form-inline">
 								    <!-- 出勤: 時 -->
-								    <select class="form-control" th:name="|attendanceList[${stat.index}].endHour|">
+								    <select class="form-control" th:name="|attendanceList[${stat.index}].endHour|" th:errorclass="errorInput">
 								      <option value=""></option>
 								      <option th:each="opt : ${attendanceForm.hourOptions}" th:value="${opt.key}" th:text="${opt.value}"
 								              th:selected="${opt.key == dailyAttendanceForm.endHour}">
@@ -81,7 +89,7 @@
 								    </select>
 								    ：
 								    <!-- 出勤: 分 -->
-								    <select class="form-control" th:name="|attendanceList[${stat.index}].endMinute|">
+								    <select class="form-control" th:name="|attendanceList[${stat.index}].endMinute|" th:errorclass="errorInput">
 								      <option value=""></option>
 								      <option th:each="opt : ${attendanceForm.minuteOptions}" th:value="${opt.key}" th:text="${opt.value}"
 								              th:selected="${opt.key == dailyAttendanceForm.endMinute}">
