@@ -289,7 +289,24 @@ public class StudentAttendanceService {
 
 		return attendanceForm;
 	}
-	
+
+	//Task27
+	/**
+	 * 勤怠フォームへエラー後に再設定
+	 * 
+	 * @param attendanceManagementDtoList
+	 * @return 勤怠編集フォーム
+	 */
+	public AttendanceForm setAttendanceFormAfterError(
+			AttendanceForm attendanceForm) {
+
+		attendanceForm.setBlankTimes(attendanceUtil.setBlankTime());
+		// 時間と分をフォームに追加
+		attendanceForm.setHourOptions(attendanceUtil.setHourOptions());
+		attendanceForm.setMinuteOptions(attendanceUtil.setMinuteOptions());
+
+		return attendanceForm;
+	}
 
 	//	//更新入力チェック
 	//	/**
@@ -303,18 +320,20 @@ public class StudentAttendanceService {
 
 	public BindingResult updateCheck(AttendanceForm attendanceForm,BindingResult bindingResult) throws ParseException {
 		Set<String> errorList = new HashSet<>();
-		Integer startHour = null;
-		Integer startMinute = null;
-		Integer endHour = null;
-		Integer endMinute = null;
 		//本日の日付
 		SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");
 		Date trainingDate = df.parse(df.format(new Date()));
+		// th:nameに合わせるため。
+		int i = 0;
 		//メッセージをストリング配列に格納する？
 		//日付が今日よりも前の場合のif文も条件に入れる。
 		for (DailyAttendanceForm dailyAttendanceForm : attendanceForm.getAttendanceList()) {
 			//フォーム内の日付
 			Date date = df.parse(dailyAttendanceForm.getTrainingDate());
+			Integer startHour = null;
+			Integer startMinute = null;
+			Integer endHour = null;
+			Integer endMinute = null;
 			if ((date.compareTo(trainingDate)) == -1) {
 				if (dailyAttendanceForm.getStartHour() != null) {
 					startHour = dailyAttendanceForm.getStartHour();
@@ -344,6 +363,13 @@ public class StudentAttendanceService {
 					String error = messageUtil.getMessage(Constants.INPUT_INVALID, str);
 					FieldError fieldError = new FieldError(bindingResult.getObjectName(),"trainingStartHour",error);
 					bindingResult.addError(fieldError);
+					if (startHour == null) {
+						FieldError fieldErrorSh = new FieldError(bindingResult.getObjectName(),"attendanceList["+i+"].startHour",error);
+						bindingResult.addError(fieldErrorSh);
+					} else {
+						FieldError fieldErrorSm = new FieldError(bindingResult.getObjectName(),"attendanceList["+i+"].startMinute",error);
+						bindingResult.addError(fieldErrorSm);
+					}
 					errorList.add(error);
 				}
 				if (endHour != null && endMinute == null
@@ -352,6 +378,13 @@ public class StudentAttendanceService {
 					String error = messageUtil.getMessage(Constants.INPUT_INVALID, str);
 					FieldError fieldError = new FieldError(bindingResult.getObjectName(),"trainingEndHour",error);
 					bindingResult.addError(fieldError);
+					if (endHour == null) {
+						FieldError fieldErrorEh = new FieldError(bindingResult.getObjectName(),"attendanceList["+i+"].endHour",error);
+						bindingResult.addError(fieldErrorEh);
+					} else {
+						FieldError fieldErrorEm = new FieldError(bindingResult.getObjectName(),"attendanceList["+i+"].endMinute",error);
+						bindingResult.addError(fieldErrorEm);
+					}
 					errorList.add(error);
 				}
 				//退勤時間のみ記入の場合
@@ -391,11 +424,12 @@ public class StudentAttendanceService {
 				System.out.println(dailyAttendanceForm.getTrainingDate());
 				
 			}
-
+			i++;
 		}
 		attendanceForm.setErrorList(errorList);
 		return bindingResult;
 	}
+	//Task27
 
 	/**
 	 * 勤怠登録・更新処理
@@ -433,6 +467,7 @@ public class StudentAttendanceService {
 			}
 			tStudentAttendance.setLmsUserId(lmsUserId);
 			tStudentAttendance.setAccountId(loginUserDto.getAccountId());
+			//Task27
 			// 出勤時刻整形(時と分の結合)
 			TrainingTime trainingStartTime = null;
 			if (dailyAttendanceForm.getStartHour() != null 
@@ -456,6 +491,7 @@ public class StudentAttendanceService {
 			} else{
 				tStudentAttendance.setTrainingEndTime("");
 			}
+			//Task27
 			// 中抜け時間
 			tStudentAttendance.setBlankTime(dailyAttendanceForm.getBlankTime());
 			// 遅刻早退ステータス

@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import jakarta.validation.Valid;
 import jp.co.sss.lms.dto.AttendanceManagementDto;
 import jp.co.sss.lms.dto.LoginUserDto;
 import jp.co.sss.lms.form.AttendanceForm;
@@ -136,9 +138,10 @@ public class AttendanceController {
 	 * @throws ParseException
 	 */
 	@RequestMapping(path = "/update", params = "complete", method = RequestMethod.POST)
-	public String complete(AttendanceForm attendanceForm, BindingResult result, Model model)
+	public String complete(@Valid @ModelAttribute AttendanceForm attendanceForm, BindingResult result, Model model)
 			throws ParseException {
-		
+		//Task27
+		//(パラメータも変更済み)
 		//更新前のチェック
 		result = studentAttendanceService.updateCheck(attendanceForm,result);
 		if(attendanceForm.getErrorList() != null) {
@@ -148,22 +151,17 @@ public class AttendanceController {
 
 		// 更新
 		if (result.hasErrors()) {
-			
-			// 一覧の再取得
-			List<AttendanceManagementDto> attendanceManagementDtoList = studentAttendanceService
-					.getAttendanceManagement(loginUserDto.getCourseId(), loginUserDto.getLmsUserId());
-			model.addAttribute("attendanceManagementDtoList", attendanceManagementDtoList);
-			
-			//勤怠フォームの生成
-			attendanceForm = studentAttendanceService
-					.setAttendanceForm(attendanceManagementDtoList);
-			model.addAttribute("attendanceForm", attendanceForm);
+			//勤怠フォームの再生成
+			studentAttendanceService.setAttendanceFormAfterError(attendanceForm);
+			System.out.println(attendanceForm);
 			return "attendance/update";
 		} else {
 			//もともとのソースコード部分
 			String message = studentAttendanceService.update(attendanceForm);
 			model.addAttribute("message", message);
 		}
+		// Task27
+
 		// 一覧の再取得
 		List<AttendanceManagementDto> attendanceManagementDtoList = studentAttendanceService
 				.getAttendanceManagement(loginUserDto.getCourseId(), loginUserDto.getLmsUserId());

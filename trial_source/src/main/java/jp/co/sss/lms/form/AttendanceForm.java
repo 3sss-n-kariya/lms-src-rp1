@@ -36,7 +36,9 @@ public class AttendanceForm {
 	private LinkedHashMap<Integer, String> minuteOptions;
 	/** 日次の勤怠フォームリスト */
 	private List<DailyAttendanceForm> attendanceList;
+	//Task27
 	/** エラーリスト */
 	private Set<String> errorList;
+	//Task27
 
 }
