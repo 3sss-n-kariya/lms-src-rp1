@@ -173,7 +173,7 @@ public class AttendanceUtil {
 	        int h = Integer.parseInt(p[0]), m = Integer.parseInt(p[1]);
 	        // 範囲が妥当なら新しいリストを返却
 	        if (0 <= h && h <= 23 && 0 <= m && m <= 59) return new int[]{h, m};
-	    } catch (NumberFormatException ignore) {}
+	    } catch (NumberFormatException e) {}
 	    return null;
 	}
 
