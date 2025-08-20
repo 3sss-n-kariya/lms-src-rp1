@@ -65,6 +65,7 @@ public interface TStudentAttendanceMapper {
 	 */
 	Boolean update(TStudentAttendance tStudentAttendance);
 	
+	//Task25
 	/**
 	 * 勤怠の未入力件数取得
 	 * 
@@ -75,5 +76,6 @@ public interface TStudentAttendanceMapper {
 	 */
 	Integer notEnterCount(@Param("lmsUserId") Integer lmsUserId,
 			@Param("deleteFlg") Short deleteFlg, @Param("trainingDate") Date trainingDate);
+	//Task25
 
 }

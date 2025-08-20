@@ -80,6 +80,7 @@ public class StudentAttendanceService {
 		return attendanceManagementDtoList;
 	}
 	
+	//Task25
 	/**
 	 * 勤怠情報の未入力件数取得
 	 * 
@@ -96,6 +97,7 @@ public class StudentAttendanceService {
 			return 0;
 		}
 	}
+	//Task25
 
 	/**
 	 * 出退勤更新前のチェック

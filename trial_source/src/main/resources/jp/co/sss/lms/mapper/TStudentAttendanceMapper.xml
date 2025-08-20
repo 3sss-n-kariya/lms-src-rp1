@@ -86,6 +86,7 @@
 		WHERE student_attendance_id = #{studentAttendanceId}
 	</update>
 	
+<!--	Task25-->
 	<select id="notEnterCount" resultType="Integer">
 	    SELECT 
 	    	COUNT(*)
@@ -109,5 +110,6 @@
 		    	training_end_time IS NULL
 	    )
 	</select>
+	<!--	Task25-->
 
 </mapper>
