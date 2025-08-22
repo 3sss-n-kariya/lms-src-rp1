@@ -1705,9 +1705,10 @@ html, body {
 	width: 50%;
 }
 
+/*Task29*/
 /* table-scroll-ber */
 .table-scroll {
-    max-height: 400px;
+    max-height: 350px;
     overflow-y: auto;
     overflow-x: hidden;
 }

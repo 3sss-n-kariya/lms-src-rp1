@@ -32,6 +32,7 @@
 		<div class="bs-component col-sm-12">
 <!--Task27-->
 			<form th:action="@{/attendance/update}" method="post" th:object="${attendanceForm}">
+				<div class="table-scroll">
 				<table class="table table-hover dataTable no-footer">
 					<thead>
 						<tr>
@@ -118,7 +119,7 @@
 						</th:block>
 					</tbody>
 				</table>
-
+				</div>
 				<div class="form-group">
 					<th:block th:if="${session.loginUserDto.role == '0001'}">
 						<a th:href="@{/attendance/detail}" class="btn btn-default">戻る</a>
@@ -128,7 +129,6 @@
 					</th:block>
 					<input type="submit" value="更新" name="complete" class="btn btn-info" onclick="return check()" />
 				</div>
-
 			</form>
 		</div>
 	</div>
