@@ -91,11 +91,7 @@ public class StudentAttendanceService {
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		Date trainingDate = df.parse(df.format(new Date()));
 		
-		try {
-			return tStudentAttendanceMapper.notEnterCount(lmsUserId, Constants.DB_FLG_FALSE, trainingDate);
-		}catch (Exception e) {
-			return 0;
-		}
+		return tStudentAttendanceMapper.notEnterCount(lmsUserId, Constants.DB_FLG_FALSE, trainingDate);
 	}
 	//Task25
 
