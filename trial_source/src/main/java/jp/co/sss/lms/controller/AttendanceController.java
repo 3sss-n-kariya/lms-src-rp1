@@ -35,6 +35,7 @@ public class AttendanceController {
 	/**
 	 * 勤怠管理画面 初期表示
 	 * 
+	 * @author 刈谷宣孝  – Task.25
 	 * @param lmsUserId
 	 * @param courseId
 	 * @param model
