@@ -84,14 +84,17 @@ public class StudentAttendanceService {
 	/**
 	 * 勤怠情報の未入力件数取得
 	 * 
+	 * @author 刈谷宣孝  – Task.25
 	 * @param lmsUserId
 	 * @return 勤怠情報の未入力件数
+	 * @throws ParseException
 	 */
 	public Integer notEnterCountMethod(Integer lmsUserId) throws ParseException {
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		Date trainingDate = df.parse(df.format(new Date()));
 		
-		return tStudentAttendanceMapper.notEnterCount(lmsUserId, Constants.DB_FLG_FALSE, trainingDate);
+		Integer notEnteredCount = tStudentAttendanceMapper.notEnterCount(lmsUserId, Constants.DB_FLG_FALSE, trainingDate);
+		return notEnteredCount;
 	}
 	//Task25
 
