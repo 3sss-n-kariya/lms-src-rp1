@@ -469,7 +469,7 @@ public class StudentAttendanceService {
 			}
 			tStudentAttendance.setLmsUserId(lmsUserId);
 			tStudentAttendance.setAccountId(loginUserDto.getAccountId());
-			//Task27
+			//Task26
 			// 出勤時刻整形(時と分の結合)
 			TrainingTime trainingStartTime = null;
 			if (dailyAttendanceForm.getStartHour() != null 
@@ -493,7 +493,7 @@ public class StudentAttendanceService {
 			} else{
 				tStudentAttendance.setTrainingEndTime("");
 			}
-			//Task27
+			//Task26
 			// 中抜け時間
 			tStudentAttendance.setBlankTime(dailyAttendanceForm.getBlankTime());
 			// 遅刻早退ステータス
