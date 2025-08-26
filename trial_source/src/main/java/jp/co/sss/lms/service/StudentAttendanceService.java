@@ -363,8 +363,6 @@ public class StudentAttendanceService {
 						||startHour == null && startMinute != null){
 					String[] str = { "出勤時間" };
 					String error = messageUtil.getMessage(Constants.INPUT_INVALID, str);
-					FieldError fieldError = new FieldError(bindingResult.getObjectName(),"trainingStartHour",error);
-					bindingResult.addError(fieldError);
 					if (startHour == null) {
 						FieldError fieldErrorSh = new FieldError(bindingResult.getObjectName(),"attendanceList["+i+"].startHour",error);
 						bindingResult.addError(fieldErrorSh);
@@ -378,8 +376,6 @@ public class StudentAttendanceService {
 						|| endHour == null && endMinute != null){
 					String[] str = { "退勤時間" };
 					String error = messageUtil.getMessage(Constants.INPUT_INVALID, str);
-					FieldError fieldError = new FieldError(bindingResult.getObjectName(),"trainingEndHour",error);
-					bindingResult.addError(fieldError);
 					if (endHour == null) {
 						FieldError fieldErrorEh = new FieldError(bindingResult.getObjectName(),"attendanceList["+i+"].endHour",error);
 						bindingResult.addError(fieldErrorEh);
