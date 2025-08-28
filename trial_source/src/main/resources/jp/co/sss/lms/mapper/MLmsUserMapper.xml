@@ -31,5 +31,48 @@
 		WHERE t1.lms_user_id = #{lmsUserId}
 			AND t1.delete_flg = #{deleteFlg}
 	</select>
+	
+  <!-- Task57 -->
+	<select id="selectUsersForAttendance" resultType="jp.co.sss.lms.dto.UserDetailDto">
+	    SELECT
+		    t1.lms_user_id            AS lmsUserId,
+		    t1.user_id                AS userId,
+		    t2.user_name              AS userName,
+		    t2.kana                   AS kana,
+		    t2.subsidy_category_id    AS subsidyCategoryId,
+		    t1.role                   AS role,
+		    t2.login_id               AS loginId,
+		    t1.hope_via_traning       AS hopeViaTraning,
+		    t1.programming_experience AS programmingExperience,
+		    t4.company_name           AS companyName,
+		    t6.course_id              AS courseId,
+		    t6.course_name            AS courseName,
+		    t8.place_name             AS placeName,
+		    t8.place_note             AS placeNote,
+		    t8.place_description      AS placeDescription,
+		    t1.account_id             AS accountId,
+		    t2.leave_flg              AS leaveFlg,
+		    t2.leave_date             AS leaveDate
+	    FROM m_lms_user t1
+		    INNER JOIN m_user        t2 ON t1.user_id = t2.user_id
+		    LEFT  JOIN t_user_company t3 ON t1.lms_user_id = t3.lms_user_id
+		    LEFT  JOIN m_company     t4 ON t3.company_id = t4.company_id
+		    LEFT  JOIN t_course_user t5 ON t1.lms_user_id = t5.lms_user_id
+		    LEFT  JOIN m_course      t6 ON t5.course_id = t6.course_id
+		    LEFT  JOIN t_user_place  t7 ON t1.lms_user_id = t7.lms_user_id
+		    LEFT  JOIN m_place       t8 ON t7.place_id = t8.place_id
+	    WHERE t1.delete_flg = #{deleteFlg}
+		    <if test="courseName != null">  AND t6.course_name  LIKE CONCAT('%', #{courseName},  '%')</if>
+		    <if test="companyName != null"> AND t4.company_name LIKE CONCAT('%', #{companyName}, '%')</if>
+		    <if test="userName != null">    AND t2.user_name    LIKE CONCAT('%', #{userName},    '%')</if>
+		    <if test="placeIdList != null and placeIdList.size() > 0">
+		      AND t8.place_id IN
+		      <foreach collection="placeIdList" item="pid" open="(" separator="," close=")"> #{pid} </foreach>
+		    </if>
+		    <if test="role != null">        AND t1.role = #{role} </if>
+		    <if test="leaveFlg != null">    AND t2.leave_flg = 1 </if>
+		    <if test="closeTime != null">   AND t6.close_time <![CDATA[ >= ]]> #{closeTime} </if>
+	    ORDER BY t1.lms_user_id ASC
+	</select>
 
 </mapper>

@@ -1,99 +1,107 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" 
-	th:replace="~{/common/layout :: layout(~{::title},~{::body/content()})}">
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{/common/layout :: layout(~{::title},~{::body/content()})}">
+
 <head>
-<meta charset="UTF-8">
-<title>勤怠情報確認 | LMS</title>
+	<meta charset="UTF-8">
+	<title>勤怠情報確認 | LMS</title>
 </head>
+
 <body>
-	<!--	Task25-->
-	<script th:if="${hasNotEnterCount}">
-        alert('過去日の勤怠に未入力があります。');
-    </script>
-    <!--	Task25-->
-
-	<!-- 完了メッセージ -->
-	<th:block th:if="${not #strings.isEmpty(message)}" id="message">
-		<div class="alert alert-info alert-dismissible fade in" role="alert">
-			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-				<span aria-hidden="true">×</span>
-			</button>
-			<span>[[${message}]]</span>
-		</div>
-	</th:block>
-
+<!--	Task57-->
 	<h2>勤怠情報確認<small>（受講生一覧）</small></h2>
 
-	<!-- エラーメッセージ -->
-	<th:block th:if="${not #strings.isEmpty(error)}" id="error">
-		<ul style="padding-left: 0; list-style: none;">
-			<li><span th:text="'*' + '&nbsp' + ${error}" class="help-inline error"></span></li>
-		</ul>
-	</th:block>
+	<!-- 検索 -->
+	<div class="well bs-component">
+		<form class="form-horizontal" th:action="@{/attendance/list}" method="post" th:object="${form}">
+			<fieldset>
+				<legend>検索</legend>
 
-	<th:block th:if="${session.loginUserDto.role == '0001'}">
-		<div class="well well-lg p10 mb10">
-			<div class="form-group">
-				<small id="now"></small>
-			</div>
-			<div class="form-group">
-				<form th:action="@{/attendance/detail}" method="post" class="form-inline">
-					<input type="submit" value="出勤" name="punchIn" class="btn btn-default" />
-					<input type="submit" value="退勤" name="punchOut" class="btn btn-default" />
-				</form>
-			</div>
-			<p><a th:href="@{/attendance/update}">勤怠情報を直接編集する</a></p>
-		</div>
-	</th:block>
+				<div class="form-group">
+					<label for="courseName" class="col-lg-2 control-label">コース名</label>
+					<div class="col-lg-10">
+						<input id="courseName" class="form-control" th:field="*{courseName}" list="courselist" />
+						<datalist id="courselist">
+							<option value="1月成果報告単体コース"></option>
+						</datalist>
+					</div>
+				</div>
 
-	<div class="row">
-		<div class="bs-component col-sm-12">
-			<div class="table-scroll">
-				<table class="table table-hover dataTable no-footer">
-					<thead class="db">
-						<tr>
-							<th class="w160">日付</th>
-							<th class="w260">コース内容</th>
-							<th class="w80">出勤</th>
-							<th class="w80">退勤</th>
-							<th class="w120">中抜け時間</th>
-							<th class="w120">ステータス</th>
-							<th class="w200">備考</th>
-						</tr>
-					</thead>
-	
-					<tbody class="db">
-						<th:block th:each="attendanceManagementDto : ${attendanceManagementDtoList}" th:object="${attendanceManagementDto}">
-							<tr>
-								<td class="w160">[[*{#dates.format(trainingDate, 'yyyy年M月d日(E)')}]]</td>
-								<td class="w260">[[*{sectionName}]]</td>
-								<td class="w80">[[*{trainingStartTime}]]</td>
-								<td class="w80">[[*{trainingEndTime}]]</td>
-								<td class="w120">[[*{blankTimeValue}]]</td>
-								<td class="w120">[[*{statusDispName}]]</td>
-								<td class="w200">[[*{note}]]</td>
-							</tr>
-						</th:block>
-					</tbody>
-				</table>
-			</div>
-		</div>
+				<div class="form-group">
+					<label for="placeFixed" class="col-lg-2 control-label">会場名</label>
+					<div class="col-lg-10">
+						<input id="placeFixed" class="form-control" type="text" readonly
+							th:value="${fixedPlaceLabel != null ? fixedPlaceLabel : '1月会場A($$)'}" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="companyName" class="col-lg-2 control-label">企業名</label>
+					<div class="col-lg-10">
+						<input id="companyName" class="form-control" th:field="*{companyName}" list="companylist" />
+						<datalist id="companylist">
+							<option value="動作確認【デモ】"></option>
+						</datalist>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label for="userName" class="col-lg-2 control-label">ユーザー名</label>
+					<div class="col-lg-10">
+						<input id="userName" class="form-control" th:field="*{userName}" />
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-lg-10 col-lg-offset-2">
+						<button type="submit" class="btn btn-primary">検索</button>
+					</div>
+				</div>
+
+				<input type="hidden" th:if="${_csrf}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+			</fieldset>
+		</form>
 	</div>
 
-	<script type="text/javascript" th:inline="javascript">
-		$(function() {
-			$("#now").text('現在の時刻は　' + getClock() + '　です。');
-			setInterval(function() {
-				$("#now").text('現在の時刻は　' + getClock() + '　です。');
-			}, 1000);
-		});
-		function getClock() {
-			const today =  new Date();
-			const hours = ('0' + today.getHours()).slice(-2);
-			const minutes = ('0' + today.getMinutes()).slice(-2);
-			return hours + ':' + minutes;
-		}
-	</script>
+	<!-- 一覧 -->
+	<div class="table-responsive">
+		<table class="table table-hover table-striped dataTable" id="userTable">
+			<thead>
+				<tr>
+					<th>ユーザーID</th>
+					<th>ユーザー名</th>
+					<th>コース名</th>
+					<th>企業名</th>
+					<th>会場</th>
+					<th>勤怠</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="u : ${userList}">
+					<td th:text="${u.userId}">24552</td>
+					<td th:text="${u.userName}">テスト受講生</td>
+					<td th:text="${u.courseName}">体験型Java研修用【デモ】</td>
+					<td th:text="${u.companyName}">動作確認【デモ】</td>
+					<td>
+						<span th:text="${u.placeName}">1月会場A</span>
+						<small th:if="${u.placeNote}" th:text="'（' + ${u.placeNote} + '）'">（$$）</small>
+					</td>
+					<td>
+						<form th:action="@{/attendance/detail}" method="post" class="form-inline">
+							<input type="hidden" name="lmsUserId" th:value="${u.lmsUserId}" />
+							<button type="submit" class="btn btn-default btn-sm">勤怠確認</button>
+							<input type="hidden" th:if="${_csrf}" th:name="${_csrf.parameterName}"
+								th:value="${_csrf.token}" />
+						</form>
+					</td>
+				</tr>
+
+				<tr th:if="${#lists.isEmpty(userList)}">
+					<td colspan="6" class="text-muted">条件を入力して「検索」を押してください。</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 
 </body>
+
 </html>

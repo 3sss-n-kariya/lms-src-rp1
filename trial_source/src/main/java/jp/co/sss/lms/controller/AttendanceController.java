@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import jakarta.validation.Valid;
 import jp.co.sss.lms.dto.AttendanceManagementDto;
 import jp.co.sss.lms.dto.LoginUserDto;
+import jp.co.sss.lms.dto.UserDetailDto;
 import jp.co.sss.lms.form.AttendanceForm;
+import jp.co.sss.lms.form.UserSearchForm;
 import jp.co.sss.lms.service.StudentAttendanceService;
 import jp.co.sss.lms.util.Constants;
 
@@ -49,7 +51,7 @@ public class AttendanceController {
 		List<AttendanceManagementDto> attendanceManagementDtoList = studentAttendanceService
 				.getAttendanceManagement(loginUserDto.getCourseId(), loginUserDto.getLmsUserId());
 		model.addAttribute("attendanceManagementDtoList", attendanceManagementDtoList);
-		
+
 		//Task25
 		// 過去の勤怠情報で未入力が無いかチェック
 		Integer notEnteredCount = studentAttendanceService.notEnterCountMethod(loginUserDto.getLmsUserId());
@@ -146,11 +148,11 @@ public class AttendanceController {
 		//Task27
 		//(パラメータも変更済み)
 		//更新前のチェック
-		result = studentAttendanceService.updateCheck(attendanceForm,result);
-		if(attendanceForm.getErrorList() != null) {
-			model.addAttribute("errorList",attendanceForm.getErrorList());
+		result = studentAttendanceService.updateCheck(attendanceForm, result);
+		if (attendanceForm.getErrorList() != null) {
+			model.addAttribute("errorList", attendanceForm.getErrorList());
 		}
-		model.addAttribute("errorCount",result.getErrorCount());
+		model.addAttribute("errorCount", result.getErrorCount());
 
 		// 更新
 		if (result.hasErrors()) {
@@ -172,32 +174,39 @@ public class AttendanceController {
 
 		return "attendance/detail";
 	}
-	
-	
+
+	//Task57
 	/**
 	 * 勤怠情報確認(受講生一覧)画面　『勤怠確認』ボタン押下
 	 * 
+	 * @author 刈谷宣孝  – Task.57
+	 * @param form
 	 * @param model
-	 * @return
-	 * @throws ParseException
+	 * @return list.html
 	 */
 	@RequestMapping(path = "/list", method = RequestMethod.GET)
-	public String studentList(Model model) throws ParseException {
+	public String studentList(@ModelAttribute("form") UserSearchForm form, Model model) {
 
-		// 勤怠一覧の取得
-		List<AttendanceManagementDto> attendanceManagementDtoList = studentAttendanceService
-				.getAttendanceManagement(loginUserDto.getCourseId(), loginUserDto.getLmsUserId());
-		model.addAttribute("attendanceManagementDtoList", attendanceManagementDtoList);
-		
-		//Task25
-		// 過去の勤怠情報で未入力が無いかチェック
-		Integer notEnteredCount = studentAttendanceService.notEnterCountMethod(loginUserDto.getLmsUserId());
-		// 未入力件数があればhasNotEnterCount変数にtrueが入る
-		boolean hasNotEnterCount = notEnteredCount > 0;
-		model.addAttribute("hasNotEnterCount", hasNotEnterCount);
-		//Task25
+		//UserDetailDtoにMLmsUserMapper.getUserDetailForSearchで取得した情報をmodelに。
+		model.addAttribute("form", form);
 
 		return "attendance/list";
 	}
+
+	/**
+	 * 
+	 * @author 刈谷宣孝  – Task.57
+	 * @param form
+	 * @param model
+	 * @return list.html
+	 */
+	@RequestMapping(path = "/list", method = RequestMethod.POST)
+	public String search(@ModelAttribute("form") UserSearchForm form, Model model) {
+
+		List<UserDetailDto> list = studentAttendanceService.selectUsersForAttendance(form);
+		model.addAttribute("userList", list);
+		return "attendance/list";
+	}
+	//Task57
 
 }

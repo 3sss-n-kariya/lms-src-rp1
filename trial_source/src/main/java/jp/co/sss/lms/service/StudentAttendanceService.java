@@ -18,10 +18,13 @@ import org.springframework.validation.FieldError;
 
 import jp.co.sss.lms.dto.AttendanceManagementDto;
 import jp.co.sss.lms.dto.LoginUserDto;
+import jp.co.sss.lms.dto.UserDetailDto;
 import jp.co.sss.lms.entity.TStudentAttendance;
 import jp.co.sss.lms.enums.AttendanceStatusEnum;
 import jp.co.sss.lms.form.AttendanceForm;
 import jp.co.sss.lms.form.DailyAttendanceForm;
+import jp.co.sss.lms.form.UserSearchForm;
+import jp.co.sss.lms.mapper.MLmsUserMapper;
 import jp.co.sss.lms.mapper.TStudentAttendanceMapper;
 import jp.co.sss.lms.util.AttendanceUtil;
 import jp.co.sss.lms.util.Constants;
@@ -50,6 +53,8 @@ public class StudentAttendanceService {
 	private LoginUserDto loginUserDto;
 	@Autowired
 	private TStudentAttendanceMapper tStudentAttendanceMapper;
+	@Autowired
+	private MLmsUserMapper mLmsUserMapper;
 
 	/**
 	 * 勤怠一覧情報取得
@@ -521,6 +526,27 @@ public class StudentAttendanceService {
 		}
 		// 完了メッセージ
 		return messageUtil.getMessage(Constants.PROP_KEY_ATTENDANCE_UPDATE_NOTICE);
+	}
+	
+	/**
+	 * 勤怠情報確認（受講生一覧）画面　DB検索
+	 * 
+	 * @author 刈谷宣孝  – Task.57
+	 * @param form
+	 * @return list
+	 */
+	public List<UserDetailDto> selectUsersForAttendance(UserSearchForm form){
+        List<UserDetailDto> list = mLmsUserMapper.selectUsersForAttendance(
+                form.getCourseName(),
+                form.getCompanyName(),
+                form.getUserName(),
+                form.getPlaceIdList(),
+                form.getRole(),
+                form.getLeaveFlg(),
+                form.getCloseTime(),
+                Integer.valueOf(Constants.DB_FLG_FALSE)
+        );
+        return list;
 	}
 
 }
