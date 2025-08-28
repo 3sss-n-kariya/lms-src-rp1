@@ -136,6 +136,7 @@ public class AttendanceController {
 	/**
 	 * 勤怠情報直接変更画面 『更新』ボタン押下
 	 * 
+	 * @author 刈谷 - Taks27
 	 * @param attendanceForm
 	 * @param model
 	 * @param result

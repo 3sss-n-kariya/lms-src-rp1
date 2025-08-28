@@ -55,6 +55,8 @@ public class StudentAttendanceService {
 	private TStudentAttendanceMapper tStudentAttendanceMapper;
 	@Autowired
 	private MLmsUserMapper mLmsUserMapper;
+	@Autowired
+	private MessageSource messageSource;
 
 	/**
 	 * 勤怠一覧情報取得
@@ -321,16 +323,15 @@ public class StudentAttendanceService {
 		return attendanceForm;
 	}
 
-	//	//更新入力チェック
-	//	/**
-	//	 * 直接入力画面更新チェック
-	//	 * 
-	//	 * @param attendanceType
-	//	 * @return　エラーメッセージ
-	//	 */
-	@Autowired
-	private MessageSource messageSource;
-
+	/**
+	 * 直接入力画面更新チェック
+	 * 
+	 * @author 刈谷 - Task27
+	 * @param attendanceForm
+	 * @param bindingResult
+	 * @return エラーメッセージ
+	 * @throws ParseException
+	 */
 	public BindingResult updateCheck(AttendanceForm attendanceForm,BindingResult bindingResult) throws ParseException {
 		Set<String> errorList = new HashSet<>();
 		//本日の日付
@@ -443,6 +444,7 @@ public class StudentAttendanceService {
 	/**
 	 * 勤怠登録・更新処理
 	 * 
+	 * @author 刈谷 - Task27
 	 * @param attendanceForm
 	 * @return 完了メッセージ
 	 * @throws ParseException
