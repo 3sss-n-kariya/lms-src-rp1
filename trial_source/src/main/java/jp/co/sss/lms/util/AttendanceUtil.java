@@ -132,9 +132,11 @@ public class AttendanceUtil {
 		return map;
 	}
 	
+	// Task26
 	/**
 	 * 出退勤時間取得
 	 * 
+	 * @author 刈谷 - Task26
 	 * @return 出退勤時間
 	 */
 	public LinkedHashMap<Integer, String> setHourOptions() {
@@ -148,6 +150,7 @@ public class AttendanceUtil {
 	/**
 	 * 出退勤分取得
 	 * 
+	 * @author 刈谷 - Task26
 	 * @return 出退勤分
 	 */
 	public LinkedHashMap<Integer, String> setMinuteOptions() {
@@ -161,6 +164,7 @@ public class AttendanceUtil {
 	/**
 	 * 時間と分を分割した新しいリスト取得
 	 * 
+	 * @author 刈谷 - Task26
 	 * @return 時間と分を分割した新しいリスト
 	 */
 	public int[] splitHhmm(String hhmm) {
@@ -176,6 +180,7 @@ public class AttendanceUtil {
 	    } catch (NumberFormatException e) {}
 	    return null;
 	}
+	// Task26
 
 	/**
 	 * 研修日の判定

@@ -238,6 +238,7 @@ public class StudentAttendanceService {
 	/**
 	 * 勤怠フォームへ設定
 	 * 
+	 * @author 刈谷 - Task26
 	 * @param attendanceManagementDtoList
 	 * @return 勤怠編集フォーム
 	 */
@@ -250,9 +251,12 @@ public class StudentAttendanceService {
 		attendanceForm.setUserName(loginUserDto.getUserName());
 		attendanceForm.setLeaveFlg(loginUserDto.getLeaveFlg());
 		attendanceForm.setBlankTimes(attendanceUtil.setBlankTime());
+
+		//Task26
 		// 時間と分をフォームに追加
 		attendanceForm.setHourOptions(attendanceUtil.setHourOptions());
 		attendanceForm.setMinuteOptions(attendanceUtil.setMinuteOptions());
+		//Task26
 
 		// 途中退校している場合のみ設定
 		if (loginUserDto.getLeaveDate() != null) {
@@ -284,12 +288,14 @@ public class StudentAttendanceService {
 			dailyAttendanceForm.setDispTrainingDate(dateUtil
 					.dateToString(attendanceManagementDto.getTrainingDate(), "yyyy年M月d日(E)"));
 			dailyAttendanceForm.setStatusDispName(attendanceManagementDto.getStatusDispName());
-			
+
+			//Task26
 			// 時間と分を分解し表示用の変数に挿入
 			int[] sh = attendanceUtil.splitHhmm(attendanceManagementDto.getTrainingStartTime());
 			if (sh != null) { dailyAttendanceForm.setStartHour(sh[0]); dailyAttendanceForm.setStartMinute(sh[1]); }
 			int[] eh = attendanceUtil.splitHhmm(attendanceManagementDto.getTrainingEndTime());
 			if (eh != null) { dailyAttendanceForm.setEndHour(eh[0]); dailyAttendanceForm.setEndMinute(eh[1]); }
+			//Task26
 
 			attendanceForm.getAttendanceList().add(dailyAttendanceForm);
 		}
