@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+	th:replace="~{/common/layout :: layout(~{::title},~{::body/content()})}">
+<head>
+<meta charset="UTF-8">
+<title>勤怠情報確認 | LMS</title>
+</head>
+<body>
+	<!--	Task25-->
+	<script th:if="${hasNotEnterCount}">
+        alert('過去日の勤怠に未入力があります。');
+    </script>
+    <!--	Task25-->
+
+	<!-- 完了メッセージ -->
+	<th:block th:if="${not #strings.isEmpty(message)}" id="message">
+		<div class="alert alert-info alert-dismissible fade in" role="alert">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">×</span>
+			</button>
+			<span>[[${message}]]</span>
+		</div>
+	</th:block>
+
+	<h2>勤怠情報確認<small>（受講生一覧）</small></h2>
+
+	<!-- エラーメッセージ -->
+	<th:block th:if="${not #strings.isEmpty(error)}" id="error">
+		<ul style="padding-left: 0; list-style: none;">
+			<li><span th:text="'*' + '&nbsp' + ${error}" class="help-inline error"></span></li>
+		</ul>
+	</th:block>
+
+	<th:block th:if="${session.loginUserDto.role == '0001'}">
+		<div class="well well-lg p10 mb10">
+			<div class="form-group">
+				<small id="now"></small>
+			</div>
+			<div class="form-group">
+				<form th:action="@{/attendance/detail}" method="post" class="form-inline">
+					<input type="submit" value="出勤" name="punchIn" class="btn btn-default" />
+					<input type="submit" value="退勤" name="punchOut" class="btn btn-default" />
+				</form>
+			</div>
+			<p><a th:href="@{/attendance/update}">勤怠情報を直接編集する</a></p>
+		</div>
+	</th:block>
+
+	<div class="row">
+		<div class="bs-component col-sm-12">
+			<div class="table-scroll">
+				<table class="table table-hover dataTable no-footer">
+					<thead class="db">
+						<tr>
+							<th class="w160">日付</th>
+							<th class="w260">コース内容</th>
+							<th class="w80">出勤</th>
+							<th class="w80">退勤</th>
+							<th class="w120">中抜け時間</th>
+							<th class="w120">ステータス</th>
+							<th class="w200">備考</th>
+						</tr>
+					</thead>
+	
+					<tbody class="db">
+						<th:block th:each="attendanceManagementDto : ${attendanceManagementDtoList}" th:object="${attendanceManagementDto}">
+							<tr>
+								<td class="w160">[[*{#dates.format(trainingDate, 'yyyy年M月d日(E)')}]]</td>
+								<td class="w260">[[*{sectionName}]]</td>
+								<td class="w80">[[*{trainingStartTime}]]</td>
+								<td class="w80">[[*{trainingEndTime}]]</td>
+								<td class="w120">[[*{blankTimeValue}]]</td>
+								<td class="w120">[[*{statusDispName}]]</td>
+								<td class="w200">[[*{note}]]</td>
+							</tr>
+						</th:block>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript" th:inline="javascript">
+		$(function() {
+			$("#now").text('現在の時刻は　' + getClock() + '　です。');
+			setInterval(function() {
+				$("#now").text('現在の時刻は　' + getClock() + '　です。');
+			}, 1000);
+		});
+		function getClock() {
+			const today =  new Date();
+			const hours = ('0' + today.getHours()).slice(-2);
+			const minutes = ('0' + today.getMinutes()).slice(-2);
+			return hours + ':' + minutes;
+		}
+	</script>
+
+</body>
+</html>

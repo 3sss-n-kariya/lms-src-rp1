@@ -172,5 +172,32 @@ public class AttendanceController {
 
 		return "attendance/detail";
 	}
+	
+	
+	/**
+	 * 勤怠情報確認(受講生一覧)画面　『勤怠確認』ボタン押下
+	 * 
+	 * @param model
+	 * @return
+	 * @throws ParseException
+	 */
+	@RequestMapping(path = "/list", method = RequestMethod.GET)
+	public String studentList(Model model) throws ParseException {
+
+		// 勤怠一覧の取得
+		List<AttendanceManagementDto> attendanceManagementDtoList = studentAttendanceService
+				.getAttendanceManagement(loginUserDto.getCourseId(), loginUserDto.getLmsUserId());
+		model.addAttribute("attendanceManagementDtoList", attendanceManagementDtoList);
+		
+		//Task25
+		// 過去の勤怠情報で未入力が無いかチェック
+		Integer notEnteredCount = studentAttendanceService.notEnterCountMethod(loginUserDto.getLmsUserId());
+		// 未入力件数があればhasNotEnterCount変数にtrueが入る
+		boolean hasNotEnterCount = notEnteredCount > 0;
+		model.addAttribute("hasNotEnterCount", hasNotEnterCount);
+		//Task25
+
+		return "attendance/list";
+	}
 
 }
