@@ -38,6 +38,7 @@
 						<tr>
 							<th class="w140">日付</th>
 							<th class="w140">コース内容</th>
+<!--							// Task28-->
 							<th class="w60">定時</th>
 							<th class="w180">出勤</th>
 							<th class="w180">退勤</th>
@@ -62,6 +63,7 @@
 								<td class="w140">[[${dailyAttendanceForm.dispTrainingDate}]]</td>
 								<td class="w140">[[${dailyAttendanceForm.sectionName}]]</td>
 								<td class="w60" >
+<!--									// Task28-->
 									<button type="button" class="btn btn-success default-button js-regular">定時</button>
 								</td>
 <!--								// Task26-->
@@ -135,6 +137,7 @@
 		</div>
 	</div>
 	
+<!--	// Task28-->
 <!--	定時ボタンのjs-->
 	<script>
 	  document.addEventListener('click', function (e) {
@@ -152,6 +155,7 @@
 	    if (endMinute)   endMinute.value   = '0';
 	  });
 	</script>
+<!--	// Task28-->
 
 <!--	更新ボタン押下時確認ダイアログ表示-->
 	<script type="text/javascript"> 
